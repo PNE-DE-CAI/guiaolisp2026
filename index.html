@@ -1,0 +1,924 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>OLISP 2026 · Guia Gamificado de Aplicação</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=Playfair+Display:wght@600;700;800&family=JetBrains+Mono:wght@400;500;700&display=swap" rel="stylesheet">
+    <style>
+        *{margin:0;padding:0;box-sizing:border-box}
+        body{font-family:'Inter',sans-serif;background:linear-gradient(145deg,#0a2f6c 0%,#041a3a 100%);min-height:100vh;color:#1e293b}
+        .main-container{max-width:1400px;margin:20px auto;background:#0f1a24;border-radius:48px;padding:20px;box-shadow:0 30px 35px rgba(0,0,0,0.5),inset 0 1px 4px rgba(255,255,200,0.1);border:1px solid #d32f2f}
+        .header{display:flex;justify-content:space-between;align-items:center;background:rgba(10,47,108,0.85);backdrop-filter:blur(4px);padding:12px 24px;border-radius:60px;margin-bottom:25px;flex-wrap:wrap;gap:15px}
+        .logo-area{display:flex;align-items:center;gap:14px}
+        .logo-icon{width:52px;height:52px;background:linear-gradient(135deg,#d32f2f,#ff6b6b);border-radius:12px;display:flex;align-items:center;justify-content:center;font-size:1.6rem;font-weight:800;color:white;flex-shrink:0}
+        .logo-area span{font-size:1.1rem;font-weight:600;color:#ffec9e}
+        .title-badge{background:#d32f2f;color:white;padding:6px 18px;border-radius:3rem;font-weight:bold;letter-spacing:1px;font-size:0.85rem}
+        .cover-badge{background:rgba(255,236,158,0.15);color:#ffec9e;padding:6px 18px;border-radius:3rem;font-weight:700;letter-spacing:0.5px;font-size:0.82rem;border:1px solid rgba(255,236,158,0.3)}
+        .header-meta{display:flex;gap:16px;flex-wrap:wrap;align-items:center}
+        .header-meta-item{display:flex;align-items:center;gap:6px;font-size:0.75rem;color:#b4c8e0}
+        .header-meta-item .dot{width:6px;height:6px;border-radius:50%;background:#ffec9e}
+        .xp-badge-header{background:rgba(255,236,158,0.15);color:#ffec9e;padding:6px 18px;border-radius:3rem;font-weight:700;letter-spacing:0.5px;font-size:0.82rem;border:1px solid rgba(255,236,158,0.3);font-family:'JetBrains Mono',monospace;display:flex;align-items:center;gap:6px}
+
+        .content-area{padding:0 0.5rem}
+
+        .section-title-row{display:flex;align-items:center;gap:12px;margin-bottom:1.2rem;margin-top:2rem}
+        .section-title-row:first-child{margin-top:0}
+        .section-marker{width:4px;height:28px;background:#d32f2f;border-radius:4px;flex-shrink:0}
+        .section-title{font-family:'Playfair Display',serif;font-size:1.3rem;color:#ffec9e;font-weight:700}
+        .section-tag{font-size:0.65rem;text-transform:uppercase;letter-spacing:0.1em;color:#b4c8e0;background:rgba(255,255,255,0.08);padding:3px 10px;border-radius:30px;font-weight:600}
+
+        .card{background:white;border-radius:32px;padding:1.5rem;margin-bottom:1.5rem;box-shadow:0 8px 20px rgba(0,0,0,0.2);border:1px solid #e0e4e9}
+        .card-dark{background:rgba(255,255,255,0.06);border:1px solid rgba(255,255,255,0.12);border-radius:32px;padding:1.5rem;margin-bottom:1.5rem;backdrop-filter:blur(4px)}
+
+        .stats-row{display:grid;grid-template-columns:repeat(auto-fit,minmax(180px,1fr));gap:1rem;margin-bottom:1.5rem}
+        .stat-card{background:white;border-radius:28px;padding:1rem 1.25rem;border:1px solid #e0e4e9;box-shadow:0 2px 8px rgba(0,0,0,0.05)}
+        .stat-label{font-size:0.7rem;text-transform:uppercase;letter-spacing:0.06em;color:#64748b;margin-bottom:0.3rem}
+        .stat-value{font-size:1.8rem;font-weight:800;color:#0a2f6c;line-height:1.2}
+        .stat-sub{font-size:0.7rem;color:#94a3b8;margin-top:4px}
+        .stat-card-dark{background:rgba(255,255,255,0.06);border:1px solid rgba(255,255,255,0.12);border-radius:28px;padding:1rem 1.25rem;backdrop-filter:blur(4px)}
+        .stat-card-dark .stat-label{color:#b4c8e0}
+        .stat-card-dark .stat-value{color:#ffec9e}
+        .stat-card-dark .stat-sub{color:#7a8ea8}
+
+        .info-box,.warning-box{border-radius:20px;padding:1rem 1.25rem;font-size:0.8rem;margin-bottom:1rem;line-height:1.6}
+        .info-box{background:#e6f1fb;border-left:5px solid #0a2f6c;color:#0a2f6c}
+        .warning-box{background:#fef2f2;border-left:5px solid #d32f2f;color:#991b1b}
+        .info-box strong,.warning-box strong{font-weight:700}
+        .info-box-dark{background:rgba(10,47,108,0.25);border-left:5px solid #3b82f6;border-radius:20px;padding:1rem 1.25rem;font-size:0.8rem;margin-bottom:1rem;color:#b4c8e0;line-height:1.6}
+        .info-box-dark strong{color:#e2e8f0}
+        .warning-box-dark{background:rgba(211,47,47,0.15);border-left:5px solid #d32f2f;border-radius:20px;padding:1rem 1.25rem;font-size:0.8rem;margin-bottom:1rem;color:#fca5a5;line-height:1.6}
+        .warning-box-dark strong{color:#fecaca}
+
+        .table-wrap{overflow-x:auto;border-radius:16px;border:1px solid #e0e4e9;background:white}
+        table{width:100%;border-collapse:collapse;font-size:0.82rem}
+        thead th{background:#0a2f6c;color:white;padding:10px 14px;text-align:left;font-weight:600;font-size:0.75rem;text-transform:uppercase;letter-spacing:0.04em;white-space:nowrap}
+        tbody td{padding:9px 14px;border-bottom:1px solid #e5e7eb;vertical-align:middle}
+        tbody tr:hover td{background:#f8fafc}
+
+        .badge{display:inline-flex;align-items:center;gap:5px;padding:3px 10px;border-radius:30px;font-size:0.68rem;font-weight:600;white-space:nowrap}
+        .badge-abaixo{background:#fef2f2;color:#d32f2f}
+        .badge-basico{background:#e6f1fb;color:#0a2f6c}
+        .badge-proficiente{background:#e6f7e6;color:#16a34a}
+        .badge-alerta{background:#fff7ed;color:#ea580c}
+        .badge-ausente{background:#f1f5f9;color:#64748b}
+
+        .prog-bar{height:8px;background:#e2e8f0;border-radius:10px;overflow:hidden;margin-top:8px}
+        .prog-fill{height:100%;border-radius:10px;transition:width 0.8s ease}
+
+        .legend{display:flex;gap:1.2rem;margin-bottom:1rem;flex-wrap:wrap}
+        .legend-item{display:flex;align-items:center;gap:6px;font-size:0.72rem;color:#b4c8e0}
+        .legend-dot{width:10px;height:10px;border-radius:50%}
+
+        .conclusions-grid{display:grid;grid-template-columns:1fr 1fr;gap:1.5rem}
+        .conclusion-card{background:white;border-radius:28px;padding:1.5rem;border:1px solid #e0e4e9;box-shadow:0 2px 8px rgba(0,0,0,0.05)}
+        .conclusion-card h3{font-family:'Playfair Display',serif;font-size:1.1rem;color:#0a2f6c;margin-bottom:1rem;display:flex;align-items:center;gap:8px}
+        .conclusion-card h3 i{color:#d32f2f;font-size:0.9rem}
+        .conclusion-card ul{list-style:none;padding:0}
+        .conclusion-card li{font-size:0.82rem;color:#475569;padding:8px 0 8px 20px;border-bottom:1px solid #f1f5f9;position:relative;line-height:1.5}
+        .conclusion-card li:last-child{border-bottom:none}
+        .conclusion-card li::before{content:'';position:absolute;left:0;top:14px;width:8px;height:8px;border-radius:50%;background:#d32f2f}
+        .conclusion-card li strong{color:#1e293b}
+
+        .delta{font-weight:600;font-size:0.78rem}
+        .delta-down{color:#d32f2f}
+        .delta-up{color:#16a34a}
+        .delta-same{color:#94a3b8}
+
+        footer{text-align:center;margin-top:2rem;padding:1rem;color:#5a7a9e;font-size:0.7rem;border-top:1px solid rgba(255,255,255,0.08)}
+        footer strong{color:#b4c8e0}
+
+        @keyframes fadeUp{from{opacity:0;transform:translateY(12px)}to{opacity:1;transform:translateY(0)}}
+        .anim{opacity:0;animation:fadeUp 0.5s ease forwards}
+        .anim-d1{animation-delay:0.05s}.anim-d2{animation-delay:0.1s}.anim-d3{animation-delay:0.15s}.anim-d4{animation-delay:0.2s}.anim-d5{animation-delay:0.25s}.anim-d6{animation-delay:0.3s}.anim-d7{animation-delay:0.35s}.anim-d8{animation-delay:0.4s}.anim-d9{animation-delay:0.45s}.anim-d10{animation-delay:0.5s}
+
+        /* ===== GAMIFICATION OVERRIDES ===== */
+        .quest-card{background:white;border-radius:32px;margin-bottom:1.5rem;box-shadow:0 8px 20px rgba(0,0,0,0.2);border:1px solid #e0e4e9;overflow:hidden;transition:border-color 0.3s,box-shadow 0.3s}
+        .quest-card:hover{box-shadow:0 12px 30px rgba(0,0,0,0.25)}
+        .quest-card.completed{border-color:#16a34a}
+        .quest-header{display:flex;align-items:center;gap:14px;padding:1.4rem 1.6rem;cursor:pointer;user-select:none}
+        .quest-number{width:48px;height:48px;min-width:48px;border-radius:16px;display:flex;align-items:center;justify-content:center;font-family:'JetBrains Mono',monospace;font-weight:700;font-size:1.1rem;background:#e6f1fb;color:#0a2f6c;border:1px solid #c7d9f0;transition:all 0.3s}
+        .quest-card.completed .quest-number{background:#e6f7e6;color:#16a34a;border-color:#a7f3d0}
+        .quest-info{flex:1}
+        .quest-title{font-size:1.05rem;font-weight:700;color:#0a2f6c;letter-spacing:-0.02em;margin-bottom:2px}
+        .quest-desc{font-size:0.78rem;color:#64748b}
+        .quest-xp{font-family:'JetBrains Mono',monospace;font-size:0.72rem;font-weight:700;color:#ca8a04;background:#fef9e7;border:1px solid #fde68a;padding:4px 12px;border-radius:20px;white-space:nowrap}
+        .quest-toggle{font-size:1.1rem;color:#94a3b8;transition:transform 0.3s}
+        .quest-card.open .quest-toggle{transform:rotate(180deg)}
+        .quest-body{max-height:0;overflow:hidden;transition:max-height 0.5s cubic-bezier(0.22,1,0.36,1)}
+        .quest-card.open .quest-body{max-height:8000px}
+        .quest-content{padding:0 1.6rem 1.6rem;border-top:1px solid #e5e7eb}
+        .quest-content h3{font-family:'Playfair Display',serif;font-size:1rem;font-weight:700;color:#0a2f6c;margin:1.2rem 0 0.6rem;display:flex;align-items:center;gap:8px}
+        .quest-content p{font-size:0.85rem;color:#475569;line-height:1.7;margin-bottom:0.8rem}
+        .quest-content ul,.quest-content ol{margin:0.5rem 0 1rem 1.2rem;font-size:0.85rem;color:#475569;line-height:1.8}
+        .quest-content li{margin-bottom:0.3rem}
+        .quest-content strong{color:#1e293b}
+        .quest-content kbd{background:#f1f5f9;padding:2px 8px;border-radius:6px;font-family:'JetBrains Mono',monospace;font-size:0.78rem;border:1px solid #e2e8f0}
+
+        .tips-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:1rem;margin:1rem 0}
+        .tip-card{background:#f8fafc;border:1px solid #e5e7eb;border-radius:20px;padding:1.2rem;transition:all 0.3s;cursor:default}
+        .tip-card:hover{background:#f0f4ff;border-color:#c7d9f0;transform:translateY(-3px)}
+        .tip-card .tip-icon{font-size:1.5rem;margin-bottom:0.5rem}
+        .tip-card .tip-title{font-size:0.9rem;font-weight:700;color:#0a2f6c;margin-bottom:0.3rem}
+        .tip-card .tip-text{font-size:0.78rem;color:#64748b;line-height:1.6}
+
+        .checklist{list-style:none;margin:1rem 0;padding:0}
+        .checklist li{display:flex;align-items:center;gap:12px;padding:10px 14px;border-radius:14px;margin-bottom:6px;font-size:0.85rem;color:#475569;cursor:pointer;transition:all 0.2s;border:1px solid transparent}
+        .checklist li:hover{background:#f8fafc;border-color:#e5e7eb}
+        .checklist li.checked{color:#16a34a}
+        .check-box{width:22px;height:22px;min-width:22px;border:2px solid #cbd5e1;border-radius:7px;display:flex;align-items:center;justify-content:center;font-size:0.7rem;transition:all 0.2s}
+        .checklist li.checked .check-box{background:#16a34a;border-color:#16a34a;color:white}
+
+        .token-display{background:#0a2f6c;border:1px dashed rgba(255,236,158,0.3);border-radius:20px;padding:1.2rem 1.5rem;margin:1rem 0;text-align:center;font-family:'JetBrains Mono',monospace}
+        .token-display .token-label{font-size:0.7rem;text-transform:uppercase;letter-spacing:0.1em;color:#b4c8e0;margin-bottom:6px}
+        .token-display .token-value{font-size:1.3rem;font-weight:700;color:#ffec9e;letter-spacing:0.15em}
+
+        .complete-btn{background:#d32f2f;color:white;border:none;padding:10px 24px;border-radius:30px;font-family:'Inter',sans-serif;font-weight:700;font-size:0.82rem;cursor:pointer;transition:all 0.3s;box-shadow:0 4px 12px rgba(211,47,47,0.3)}
+        .complete-btn:hover{background:#b71c1c;transform:translateY(-2px);box-shadow:0 6px 20px rgba(211,47,47,0.4)}
+        .complete-btn:disabled{background:#e5e7eb;color:#94a3b8;cursor:default;box-shadow:none;transform:none}
+
+        .progress-section{background:rgba(255,255,255,0.06);border:1px solid rgba(255,255,255,0.12);border-radius:28px;padding:1.2rem 1.5rem;margin-bottom:1.5rem;backdrop-filter:blur(4px)}
+        .progress-header{display:flex;justify-content:space-between;align-items:center;margin-bottom:10px}
+        .progress-label{font-size:0.75rem;color:#b4c8e0;text-transform:uppercase;letter-spacing:0.08em;font-weight:600}
+        .progress-count{font-family:'JetBrains Mono',monospace;font-size:0.82rem;color:#ffec9e;font-weight:700}
+        .progress-bar-wrap{width:100%;height:10px;background:rgba(255,255,255,0.08);border-radius:10px;overflow:hidden}
+        .progress-fill{height:100%;width:0%;background:linear-gradient(90deg,#d32f2f,#ff6b6b);border-radius:10px;transition:width 0.8s cubic-bezier(0.22,1,0.36,1);box-shadow:0 0 12px rgba(211,47,47,0.4)}
+        .progress-milestones{display:flex;justify-content:space-between;margin-top:8px}
+        .milestone{font-size:0.65rem;color:#5a7a9e;text-align:center;transition:color 0.3s;font-weight:600;text-transform:uppercase;letter-spacing:0.04em}
+        .milestone.reached{color:#ffec9e}
+
+        .hero-card{background:linear-gradient(135deg,rgba(10,47,108,0.4),rgba(211,47,47,0.1));border:1px solid rgba(255,236,158,0.15);border-radius:32px;padding:2.5rem 2rem;text-align:center;margin-bottom:1.5rem;position:relative;overflow:hidden}
+        .hero-card::before{content:'';position:absolute;top:-50%;left:-50%;width:200%;height:200%;background:conic-gradient(from 0deg,transparent,rgba(211,47,47,0.03),transparent,rgba(255,236,158,0.03),transparent);animation:rotateBg 20s linear infinite}
+        @keyframes rotateBg{to{transform:rotate(360deg)}}
+        .hero-content{position:relative;z-index:1}
+        .hero-icon{font-size:3rem;margin-bottom:0.8rem;display:inline-block;animation:float 3s ease-in-out infinite}
+        @keyframes float{0%,100%{transform:translateY(0)}50%{transform:translateY(-8px)}}
+        .hero-card h1{font-family:'Playfair Display',serif;font-size:2.2rem;font-weight:800;color:#ffec9e;margin-bottom:0.5rem;letter-spacing:-0.02em}
+        .hero-card .subtitle{font-size:1rem;color:#b4c8e0;font-weight:400;margin-bottom:1rem}
+        .hero-badges{display:flex;gap:10px;justify-content:center;flex-wrap:wrap}
+        .hero-badge{background:rgba(255,255,255,0.06);border:1px solid rgba(255,255,255,0.12);padding:6px 16px;border-radius:30px;font-size:0.72rem;font-weight:600;color:#b4c8e0}
+        .hero-badge.highlight{background:rgba(211,47,47,0.2);border-color:rgba(211,47,47,0.4);color:#fca5a5}
+
+        .final-cta{background:linear-gradient(135deg,rgba(10,47,108,0.4),rgba(211,47,47,0.1));border:1px solid #d32f2f;border-radius:32px;padding:2.5rem 2rem;text-align:center;margin-top:2rem;position:relative;overflow:hidden}
+        .final-cta::before{content:'';position:absolute;inset:0;background:radial-gradient(circle at 50% 50%,rgba(255,236,158,0.03),transparent 70%)}
+        .final-cta h2{font-family:'Playfair Display',serif;font-size:1.6rem;font-weight:700;color:#ffec9e;margin-bottom:0.8rem;position:relative}
+        .final-cta p{font-size:0.9rem;color:#b4c8e0;position:relative;line-height:1.7}
+
+        .achievement-popup{position:fixed;top:20px;right:20px;background:#0f1a24;border:1px solid #d32f2f;border-radius:24px;padding:1.2rem 1.5rem;display:flex;align-items:center;gap:14px;z-index:1000;box-shadow:0 10px 40px rgba(0,0,0,0.5);transform:translateX(120%);transition:transform 0.5s cubic-bezier(0.22,1,0.36,1)}
+        .achievement-popup.show{transform:translateX(0)}
+        .achievement-popup .ach-icon{font-size:2rem}
+        .achievement-popup .ach-title{font-weight:700;color:#ffec9e;font-size:0.9rem}
+        .achievement-popup .ach-desc{color:#b4c8e0;font-size:0.78rem}
+        .confetti-container{position:fixed;inset:0;pointer-events:none;z-index:999;overflow:hidden}
+        .confetti-piece{position:absolute;width:8px;height:8px;top:-10px;opacity:0;animation:confettiFall 3s ease-in forwards}
+        @keyframes confettiFall{0%{opacity:1;transform:translateY(0) rotate(0deg)}100%{opacity:0;transform:translateY(100vh) rotate(720deg)}}
+
+        @media(max-width:900px){
+            .main-container{border-radius:24px;padding:12px;margin:10px}
+            .header{border-radius:32px;padding:10px 16px}
+            .card,.card-dark,.quest-card{border-radius:20px;padding:1rem}
+            .stats-row{grid-template-columns:repeat(2,1fr)}
+            .conclusions-grid{grid-template-columns:1fr}
+            .section-title{font-size:1.1rem}
+            .hero-card h1{font-size:1.6rem}
+            .tips-grid{grid-template-columns:1fr}
+        }
+        @media(max-width:600px){
+            .stats-row{grid-template-columns:1fr 1fr}
+            .header-meta{flex-direction:column;gap:4px}
+            .quest-header{padding:1rem 1.2rem}
+            .quest-content{padding:0 1.2rem 1.2rem}
+        }
+        @media print{
+            body{background:white!important}
+            .main-container{box-shadow:none;border:none;padding:0;max-width:100%;background:white}
+            .header{display:none}
+            .card,.quest-card{box-shadow:none;border:2px solid #e0e4e9}
+            .anim{opacity:1!important;animation:none!important}
+            footer{color:#666}
+        }
+    </style>
+</head>
+<body>
+<div class="main-container">
+
+    <!-- HEADER -->
+    <div class="header anim anim-d1">
+        <div class="logo-area">
+            <div class="logo-icon">O</div>
+            <span>OLISP 2026 · Guia Gamificado de Aplicação</span>
+        </div>
+        <div class="header-meta">
+            <div class="xp-badge-header">
+                <span>XP</span>
+                <span id="totalXP">0</span>
+                <span>/ 1000</span>
+            </div>
+            <div class="cover-badge">Fiscalização e Logística</div>
+        </div>
+    </div>
+
+    <div class="content-area">
+
+        <!-- PROGRESS -->
+        <div class="progress-section anim anim-d2">
+            <div class="progress-header">
+                <span class="progress-label">Progresso das Missões</span>
+                <span class="progress-count"><span id="completedCount">0</span> / 8 concluídas</span>
+            </div>
+            <div class="progress-bar-wrap">
+                <div class="progress-fill" id="progressFill"></div>
+            </div>
+            <div class="progress-milestones">
+                <span class="milestone" data-at="1">Iniciante</span>
+                <span class="milestone" data-at="3">Praticante</span>
+                <span class="milestone" data-at="5">Especialista</span>
+                <span class="milestone" data-at="7">Mestre</span>
+                <span class="milestone" data-at="8">Lenda</span>
+            </div>
+        </div>
+
+        <!-- HERO -->
+        <div class="hero-card anim anim-d3">
+            <div class="hero-content">
+                <div class="hero-icon">🏆</div>
+                <h1>Missão: Aplicação de Prova</h1>
+                <div class="subtitle">Olimpíada Interpreta SP — SEDUC São Paulo</div>
+                <div class="hero-badges">
+                    <span class="hero-badge">Anos Finais (6º ao 9º)</span>
+                    <span class="hero-badge">Ensino Médio (1ª à 3ª)</span>
+                    <span class="hero-badge highlight">20 questões · Online</span>
+                    <span class="hero-badge">2 etapas</span>
+                </div>
+            </div>
+        </div>
+
+        <!-- STATS -->
+        <div class="stats-row anim anim-d4">
+            <div class="stat-card-dark">
+                <div class="stat-label">Total de Missões</div>
+                <div class="stat-value">8</div>
+                <div class="stat-sub">módulos para completar</div>
+            </div>
+            <div class="stat-card-dark">
+                <div class="stat-label">XP Total Disponível</div>
+                <div class="stat-value">1.000</div>
+                <div class="stat-sub">pontos de experiência</div>
+            </div>
+            <div class="stat-card-dark">
+                <div class="stat-label">Duração da Prova</div>
+                <div class="stat-value">1h20</div>
+                <div class="stat-sub">tempo recomendado</div>
+            </div>
+            <div class="stat-card-dark">
+                <div class="stat-label">Formato</div>
+                <div class="stat-value">20</div>
+                <div class="stat-sub">questões múltipla escolha</div>
+            </div>
+        </div>
+
+        <!-- QUEST 1 -->
+        <div class="section-title-row anim anim-d5">
+            <div class="section-marker"></div>
+            <div class="section-title">Missão 01</div>
+            <div class="section-tag">Preparação e Logística</div>
+        </div>
+
+        <div class="quest-card anim anim-d5" data-quest="1">
+            <div class="quest-header" onclick="toggleQuest(this)">
+                <div class="quest-number">01</div>
+                <div class="quest-info">
+                    <div class="quest-title">Preparação e Logística Escolar</div>
+                    <div class="quest-desc">Cronograma, turnos, duração e municípios afetados por feriados</div>
+                </div>
+                <div class="quest-xp">+100 XP</div>
+                <div class="quest-toggle">▾</div>
+            </div>
+            <div class="quest-body">
+                <div class="quest-content">
+                    <h3>📅 Etapa Municipal — Fase II</h3>
+                    <div class="table-wrap">
+                        <table>
+                            <thead><tr><th>Nível</th><th>Séries</th><th>Data</th></tr></thead>
+                            <tbody>
+                                <tr><td><span class="badge badge-proficiente">Nível 3</span></td><td>1ª, 2ª e 3ª série (E.M)</td><td><strong>25/08</strong></td></tr>
+                                <tr><td><span class="badge badge-basico">Nível 2</span></td><td>8º e 9º ano (E.F)</td><td><strong>26/08</strong></td></tr>
+                                <tr><td><span class="badge badge-alerta">Nível 1</span></td><td>6º e 7º ano (E.F)</td><td><strong>27/08</strong></td></tr>
+                            </tbody>
+                        </table>
+                    </div>
+
+                    <h3>⏰ Horários por turno</h3>
+                    <div class="stats-row" style="margin-top:0.5rem">
+                        <div class="stat-card">
+                            <div class="stat-label">Manhã</div>
+                            <div class="stat-value" style="font-size:1.3rem">8h — 9h20</div>
+                        </div>
+                        <div class="stat-card">
+                            <div class="stat-label">Tarde</div>
+                            <div class="stat-value" style="font-size:1.3rem">14h — 15h20</div>
+                        </div>
+                        <div class="stat-card">
+                            <div class="stat-label">Noite</div>
+                            <div class="stat-value" style="font-size:1.3rem">19h30 — 20h50</div>
+                        </div>
+                    </div>
+
+                    <div class="info-box">
+                        <strong>⏱️ Duração recomendada:</strong> até 1 hora e 20 minutos.
+                    </div>
+
+                    <h3>🏙️ Municípios afetados por feriados municipais</h3>
+                    <div class="table-wrap">
+                        <table>
+                            <thead><tr><th>Município</th><th>Feriado</th><th>Séries afetadas</th><th>Nível</th><th>Nova data</th></tr></thead>
+                            <tbody>
+                                <tr><td>Barretos</td><td>25/08</td><td>1ª, 2ª e 3ª série (E.M)</td><td><span class="badge badge-proficiente">N3</span></td><td><strong>28/08</strong></td></tr>
+                                <tr><td>Redenção da Serra</td><td>25/08</td><td>1ª, 2ª e 3ª série (E.M)</td><td><span class="badge badge-proficiente">N3</span></td><td><strong>28/08</strong></td></tr>
+                                <tr><td>Araraquara</td><td>27/08</td><td>6º e 7º ano</td><td><span class="badge badge-alerta">N1</span></td><td><strong>28/08</strong></td></tr>
+                                <tr><td>Itobi</td><td>27/08</td><td>6º e 7º ano</td><td><span class="badge badge-alerta">N1</span></td><td><strong>28/08</strong></td></tr>
+                                <tr><td>Matão</td><td>27/08</td><td>6º e 7º ano</td><td><span class="badge badge-alerta">N1</span></td><td><strong>28/08</strong></td></tr>
+                            </tbody>
+                        </table>
+                    </div>
+
+                    <div class="warning-box">
+                        <strong>⚠️ Atenção:</strong> A prova só estará aberta no <strong>turno de entrada</strong> do estudante. Qualquer tentativa de acesso fora desse período não será bem sucedida.
+                    </div>
+
+                    <h3>🏫 PEIs — Regra especial</h3>
+                    <p>Escolas PEI que iniciam no turno da manhã deverão aplicar a prova no horário da manhã. Em casos de exceção, a escola poderá aplicar a prova para um segundo grupo no mesmo turno, logo após o primeiro horário, com o término estendido.</p>
+                    <div class="info-box">
+                        <strong>Exemplo:</strong> primeiro grupo às 8:00, segundo grupo às 10:00.
+                    </div>
+
+                    <ul class="checklist" id="checklist1">
+                        <li onclick="toggleCheck(this)"><div class="check-box"></div>Confirmar datas por nível/série</li>
+                        <li onclick="toggleCheck(this)"><div class="check-box"></div>Verificar feriados municipais do seu município</li>
+                        <li onclick="toggleCheck(this)"><div class="check-box"></div>Definir turnos de aplicação</li>
+                        <li onclick="toggleCheck(this)"><div class="check-box"></div>Planejar escalonamento para escolas com muitos alunos</li>
+                    </ul>
+
+                    <div style="text-align:right;margin-top:1rem">
+                        <button class="complete-btn" onclick="completeQuest(1,100)">✅ Marcar como concluída</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- QUEST 2 -->
+        <div class="section-title-row anim anim-d6">
+            <div class="section-marker"></div>
+            <div class="section-title">Missão 02</div>
+            <div class="section-tag">Fiscais de Prova</div>
+        </div>
+
+        <div class="quest-card anim anim-d6" data-quest="2">
+            <div class="quest-header" onclick="toggleQuest(this)">
+                <div class="quest-number">02</div>
+                <div class="quest-info">
+                    <div class="quest-title">Orientações para Fiscais de Prova</div>
+                    <div class="quest-desc">Perfil recomendado, responsabilidades e instruções de aplicação</div>
+                </div>
+                <div class="quest-xp">+150 XP</div>
+                <div class="quest-toggle">▾</div>
+            </div>
+            <div class="quest-body">
+                <div class="quest-content">
+                    <h3>👤 Quem são os fiscais?</h3>
+                    <p>Fiscais de prova são pessoas responsáveis por acompanhar, supervisionar e garantir o bom andamento da aplicação da OLISP. Aconselhamos que sejam membros do <strong>corpo docente</strong> ou do <strong>trio gestor</strong>.</p>
+
+                    <div class="info-box-dark">
+                        <strong>💡 Dica:</strong> Desaconselhamos que sejam professores de Língua Portuguesa.
+                    </div>
+
+                    <h3>🎯 Perfil recomendado</h3>
+                    <div class="tips-grid">
+                        <div class="tip-card">
+                            <div class="tip-icon">🔍</div>
+                            <div class="tip-title">Atenção aos detalhes</div>
+                            <div class="tip-text">Observar cada aspecto da aplicação com cuidado.</div>
+                        </div>
+                        <div class="tip-card">
+                            <div class="tip-icon">⚖️</div>
+                            <div class="tip-title">Imparcialidade</div>
+                            <div class="tip-text">Agir com neutralidade em qualquer eventualidade.</div>
+                        </div>
+                        <div class="tip-card">
+                            <div class="tip-icon">🕐</div>
+                            <div class="tip-title">Pontualidade</div>
+                            <div class="tip-text">Respeitar rigorosamente os horários estabelecidos.</div>
+                        </div>
+                        <div class="tip-card">
+                            <div class="tip-icon">🤝</div>
+                            <div class="tip-title">Responsabilidade</div>
+                            <div class="tip-text">Senso de responsabilidade aliado a boa comunicação.</div>
+                        </div>
+                    </div>
+
+                    <h3>📋 Instruções para aplicação</h3>
+                    <div class="table-wrap">
+                        <table>
+                            <thead><tr><th>Boa prática</th><th>Descrição</th></tr></thead>
+                            <tbody>
+                                <tr><td><strong>Presença constante</strong></td><td>Pelo menos um fiscal obrigatoriamente na sala durante toda a aplicação.</td></tr>
+                                <tr><td><strong>Orientar candidatos</strong></td><td>Informar sobre regras, horários e procedimentos da prova.</td></tr>
+                                <tr><td><strong>Dispositivos eletrônicos</strong></td><td>Celulares desligados e guardados na mochila. Recomenda-se recolher durante a aplicação.</td></tr>
+                                <tr><td><strong>Ordem e silêncio</strong></td><td>Garantir ambiente adequado, sem interferências ou colas.</td></tr>
+                                <tr><td><strong>Registrar ocorrências</strong></td><td>Anotar irregularidades e reportar aos pontos focais da URE.</td></tr>
+                                <tr><td><strong>Controle do tempo</strong></td><td>Avisar candidatos sobre o tempo restante conforme instruções.</td></tr>
+                                <tr><td><strong>Posicionamento</strong></td><td>Posicionar-se no fundo da sala observando os estudantes.</td></tr>
+                                <tr><td><strong>Organização da sala</strong></td><td>Organizar para ter visão dos monitores dos estudantes.</td></tr>
+                            </tbody>
+                        </table>
+                    </div>
+
+                    <div class="warning-box">
+                        <strong>🚨 Desclassificação:</strong> O estudante que desrespeitar as regras deve ser alertado e, em última instância, convidado a se retirar (não finaliza a prova). Deve ser <strong>desclassificado via Diário de Classe</strong> (apontar ausência).
+                    </div>
+
+                    <div class="info-box">
+                        <strong>⚡ Imprevistos:</strong> Em caso de queda de energia ou internet, <strong>aumentar o tempo de prova</strong> conforme necessidade.
+                    </div>
+
+                    <ul class="checklist" id="checklist2">
+                        <li onclick="toggleCheck(this)"><div class="check-box"></div>Selecionar fiscais com perfil adequado</li>
+                        <li onclick="toggleCheck(this)"><div class="check-box"></div>Evitar professores de Língua Portuguesa como fiscais</li>
+                        <li onclick="toggleCheck(this)"><div class="check-box"></div>Informar fiscais sobre todas as instruções</li>
+                        <li onclick="toggleCheck(this)"><div class="check-box"></div>Preparar protocolo para ocorrências</li>
+                    </ul>
+
+                    <div style="text-align:right;margin-top:1rem">
+                        <button class="complete-btn" onclick="completeQuest(2,150)">✅ Marcar como concluída</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- QUEST 3 -->
+        <div class="section-title-row anim anim-d7">
+            <div class="section-marker"></div>
+            <div class="section-title">Missão 03</div>
+            <div class="section-tag">Boas Práticas</div>
+        </div>
+
+        <div class="quest-card anim anim-d7" data-quest="3">
+            <div class="quest-header" onclick="toggleQuest(this)">
+                <div class="quest-number">03</div>
+                <div class="quest-info">
+                    <div class="quest-title">Boas Práticas na Aplicação</div>
+                    <div class="quest-desc">Inclusão, salvamento, finalização e monitoramento</div>
+                </div>
+                <div class="quest-xp">+100 XP</div>
+                <div class="quest-toggle">▾</div>
+            </div>
+            <div class="quest-body">
+                <div class="quest-content">
+                    <p>Para manter o caráter <strong>lúdico e pedagógico</strong> da OLISP, siga estas dicas essenciais:</p>
+
+                    <div class="tips-grid">
+                        <div class="tip-card">
+                            <div class="tip-icon">♿</div>
+                            <div class="tip-title">Inclusão</div>
+                            <div class="tip-text">Estudantes da educação especial assistidos conforme necessidades, com tempo estendido se necessário.</div>
+                        </div>
+                        <div class="tip-card">
+                            <div class="tip-icon">💾</div>
+                            <div class="tip-title">Salvar Rascunho</div>
+                            <div class="tip-text">Orientar os estudantes a clicar em "Salvar Rascunho" para evitar perda de dados.</div>
+                        </div>
+                        <div class="tip-card">
+                            <div class="tip-icon">✅</div>
+                            <div class="tip-title">Finalizar Prova</div>
+                            <div class="tip-text">Verificar se cada estudante apertou o botão "Finalizar Prova".</div>
+                        </div>
+                        <div class="tip-card">
+                            <div class="tip-icon">🚶</div>
+                            <div class="tip-title">Movimentação</div>
+                            <div class="tip-text">Circular de forma recorrente entre os alunos durante toda a aplicação.</div>
+                        </div>
+                        <div class="tip-card">
+                            <div class="tip-icon">🌐</div>
+                            <div class="tip-title">Checagem de Navegador</div>
+                            <div class="tip-text">Conferir se os estudantes estão apenas com a aba de aplicação aberta.</div>
+                        </div>
+                    </div>
+
+                    <ul class="checklist" id="checklist3">
+                        <li onclick="toggleCheck(this)"><div class="check-box"></div>Preparar suporte para alunos com necessidades especiais</li>
+                        <li onclick="toggleCheck(this)"><div class="check-box"></div>Orientar sobre "Salvar Rascunho"</li>
+                        <li onclick="toggleCheck(this)"><div class="check-box"></div>Verificar "Finalizar Prova" de cada aluno</li>
+                        <li onclick="toggleCheck(this)"><div class="check-box"></div>Monitorar abas do navegador</li>
+                    </ul>
+
+                    <div style="text-align:right;margin-top:1rem">
+                        <button class="complete-btn" onclick="completeQuest(3,100)">✅ Marcar como concluída</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- QUEST 4 -->
+        <div class="section-title-row anim anim-d8">
+            <div class="section-marker"></div>
+            <div class="section-title">Missão 04</div>
+            <div class="section-tag">Problemas Técnicos</div>
+        </div>
+
+        <div class="quest-card anim anim-d8" data-quest="4">
+            <div class="quest-header" onclick="toggleQuest(this)">
+                <div class="quest-number">04</div>
+                <div class="quest-info">
+                    <div class="quest-title">Resolução de Problemas Técnicos</div>
+                    <div class="quest-desc">Login, conexão, cola e soluções emergenciais</div>
+                </div>
+                <div class="quest-xp">+150 XP</div>
+                <div class="quest-toggle">▾</div>
+            </div>
+            <div class="quest-body">
+                <div class="quest-content">
+                    <h3>🔧 Estudante sem avaliação disponível na Sala do Futuro</h3>
+                    <ol>
+                        <li>Verificar se o <strong>login</strong> está correto — erro recorrente de digitação. Confirmar se o estudante está no login correto.</li>
+                        <li>Verificar se a <strong>data e hora</strong> do computador estão atualizadas. A prova não abre se estiverem diferentes do real. Sugestão: trocar o computador.</li>
+                        <li>Se o problema persistir, <strong>esvaziar o cache</strong> do navegador (atalho: <kbd>Ctrl + Shift + Delete</kbd>) ou utilizar a <strong>guia anônima</strong>.</li>
+                        <li>Lembrar: a prova só estará aberta no <strong>turno de aplicação</strong>.</li>
+                    </ol>
+
+                    <h3>⚡ Escola sem conexão à internet/energia</h3>
+                    <div class="warning-box-dark">
+                        <strong>🔌 Protocolo de contingência:</strong><br>
+                        1. Verificar disponibilidade de <strong>tablets com chip</strong> na escola, na URE ou escola vizinha.<br>
+                        2. Em último caso, <strong>celulares podem ser usados emergencialmente</strong>.<br>
+                        3. Verificar possibilidade de <strong>deslocar estudantes</strong> para escola vizinha.
+                    </div>
+
+                    <div class="warning-box">
+                        <strong>🚫 ATENÇÃO:</strong> O uso de celular é expressamente proibido, salvo a exceção acima (falta de internet/energia).
+                    </div>
+
+                    <h3>🔍 Protocolo para identificação de cola</h3>
+                    <p>Os estudantes que burlaram a aplicação devem ser informados <strong>no momento</strong> em que o fiscal percebeu a tentativa de cola e devem ser <strong>desclassificados</strong> caso o ato seja confirmado.</p>
+                    <div class="info-box">
+                        <strong>Para desclassificar:</strong> marcar <strong>ausência</strong> no Diário de Classe e informar o <strong>ponto focal de Olimpíadas da Diretoria de Ensino</strong>.
+                    </div>
+
+                    <ul class="checklist" id="checklist4">
+                        <li onclick="toggleCheck(this)"><div class="check-box"></div>Conhecer soluções para login e cache</li>
+                        <li onclick="toggleCheck(this)"><div class="check-box"></div>Verificar tablets com chip disponíveis</li>
+                        <li onclick="toggleCheck(this)"><div class="check-box"></div>Identificar escola vizinha para contingência</li>
+                        <li onclick="toggleCheck(this)"><div class="check-box"></div>Conhecer protocolo de desclassificação por cola</li>
+                    </ul>
+
+                    <div style="text-align:right;margin-top:1rem">
+                        <button class="complete-btn" onclick="completeQuest(4,150)">✅ Marcar como concluída</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- QUEST 5 -->
+        <div class="section-title-row anim anim-d9">
+            <div class="section-marker"></div>
+            <div class="section-title">Missão 05</div>
+            <div class="section-tag">Diário de Classe</div>
+        </div>
+
+        <div class="quest-card anim anim-d9" data-quest="5">
+            <div class="quest-header" onclick="toggleQuest(this)">
+                <div class="quest-number">05</div>
+                <div class="quest-info">
+                    <div class="quest-title">Diário de Classe: Enturmação</div>
+                    <div class="quest-desc">Registro de presença, ausência e desclassificação</div>
+                </div>
+                <div class="quest-xp">+100 XP</div>
+                <div class="quest-toggle">▾</div>
+            </div>
+            <div class="quest-body">
+                <div class="quest-content">
+                    <h3>📝 Processo de aplicação da prova</h3>
+                    <p>O fluxo completo de aplicação segue estas etapas:</p>
+                    <ol>
+                        <li><strong>Organizar espaço adequado</strong> na escola para aplicação de prova.</li>
+                        <li><strong>Conduzir alunos</strong> para a aplicação da prova.</li>
+                        <li><strong>Gerar o token</strong> (preferencialmente pelo trio gestor).</li>
+                        <li><strong>Registrar a presença</strong> dos estudantes na lista de chamada na SED.</li>
+                        <li><strong>Desclassificar estudantes</strong> com ocorrências na SED.</li>
+                    </ol>
+
+                    <h3>📊 Enturmação e Frequência</h3>
+                    <div class="info-box">
+                        <strong>Caminho na SED:</strong> Início → Diário de Classe → Olimpíadas → Enturmação e Frequência.
+                    </div>
+                    <ul>
+                        <li>Selecione os dados da sua URE e a turma do ensalamento correta.</li>
+                        <li>Na tabela de estudantes haverá, no dia da prova, um botão para marcar <strong>AUSÊNCIA</strong>.</li>
+                        <li>Selecione para marcar os estudantes que não fizeram a prova na escola.</li>
+                    </ul>
+
+                    <div class="warning-box">
+                        <strong>🚫 Desclassificação:</strong> Para desclassificar estudantes que burlaram o processo de prova, use também a marcação de <strong>AUSÊNCIA</strong> no Diário de Classe.
+                    </div>
+
+                    <ul class="checklist" id="checklist5">
+                        <li onclick="toggleCheck(this)"><div class="check-box"></div>Organizar espaço de aplicação</li>
+                        <li onclick="toggleCheck(this)"><div class="check-box"></div>Saber navegar no Diário de Classe (SED)</li>
+                        <li onclick="toggleCheck(this)"><div class="check-box"></div>Registrar presenças e ausências corretamente</li>
+                    </ul>
+
+                    <div style="text-align:right;margin-top:1rem">
+                        <button class="complete-btn" onclick="completeQuest(5,100)">✅ Marcar como concluída</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- QUEST 6 -->
+        <div class="section-title-row anim anim-d10">
+            <div class="section-marker"></div>
+            <div class="section-title">Missão 06</div>
+            <div class="section-tag">Token de Aplicação</div>
+        </div>
+
+        <div class="quest-card anim anim-d10" data-quest="6">
+            <div class="quest-header" onclick="toggleQuest(this)">
+                <div class="quest-number">06</div>
+                <div class="quest-info">
+                    <div class="quest-title">Token de Aplicação</div>
+                    <div class="quest-desc">Geração, validade e uso do token em lote</div>
+                </div>
+                <div class="quest-xp">+150 XP</div>
+                <div class="quest-toggle">▾</div>
+            </div>
+            <div class="quest-body">
+                <div class="quest-content">
+                    <h3>🔐 O que é o Token?</h3>
+                    <p>Na Fase 2 da OLISP, o <strong>token poderá ser gerado em lote</strong> pelas unidades escolares. A escola deverá gerar um mesmo token de aplicação para todas as turmas.</p>
+
+                    <div class="token-display">
+                        <div class="token-label">Token de Atividades</div>
+                        <div class="token-value">••••••••</div>
+                    </div>
+
+                    <h3>📌 Regras importantes</h3>
+                    <ul>
+                        <li>Indicamos que algum membro do <strong>trio gestor</strong> seja responsável por gerar o token.</li>
+                        <li>O token tem a <strong>duração de 30 minutos</strong>. Se um estudante chegar atrasado e o token já tiver expirado, um novo deverá ser gerado.</li>
+                        <li>Siga as instruções para que o token esteja <strong>visível para todos</strong> e evite que várias pessoas gerem o token.</li>
+                    </ul>
+
+                    <h3>🔄 Tipos de Token</h3>
+                    <div class="table-wrap">
+                        <table>
+                            <thead><tr><th>Tipo</th><th>Descrição</th></tr></thead>
+                            <tbody>
+                                <tr><td><strong>Token por turma</strong></td><td>Um token por turma do ensalamento. Ex: 3 turmas N1 usam Token #1; 4 turmas N2 usam Token #2.</td></tr>
+                                <tr><td><strong>Token em lote</strong></td><td>Um token para todas as turmas da escola. Exige que todas as turmas sejam associadas a um único token.</td></tr>
+                            </tbody>
+                        </table>
+                    </div>
+
+                    <h3>📍 Como gerar o Token</h3>
+                    <p>Na <strong>Sala do Futuro</strong>, acesse a geração de token pelo ícone no menu principal e também pelo menu lateral. Na tela do Token de Atividades, escolha a turma onde a prova será aplicada.</p>
+                    <p>O token também pode ser gerado pelo <strong>Gerenciador</strong>.</p>
+
+                    <div class="info-box-dark">
+                        <strong>📎 Material de apoio:</strong> Consulte o tutorial "Como gerar um Token em lote" e a "LIVE — Orientações de Aplicação da Prova de Recuperação" para instruções detalhadas.
+                    </div>
+
+                    <ul class="checklist" id="checklist6">
+                        <li onclick="toggleCheck(this)"><div class="check-box"></div>Designar responsável para gerar o token (trio gestor)</li>
+                        <li onclick="toggleCheck(this)"><div class="check-box"></div>Escolher tipo de token (por turma ou em lote)</li>
+                        <li onclick="toggleCheck(this)"><div class="check-box"></div>Garantir que o token esteja visível para todos</li>
+                        <li onclick="toggleCheck(this)"><div class="check-box"></div>Preparar geração de novo token para atrasados (validade: 30 min)</li>
+                    </ul>
+
+                    <div style="text-align:right;margin-top:1rem">
+                        <button class="complete-btn" onclick="completeQuest(6,150)">✅ Marcar como concluída</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- QUEST 7 -->
+        <div class="section-title-row">
+            <div class="section-marker"></div>
+            <div class="section-title">Missão 07</div>
+            <div class="section-tag">Alunos Transferidos</div>
+        </div>
+
+        <div class="quest-card" data-quest="7">
+            <div class="quest-header" onclick="toggleQuest(this)">
+                <div class="quest-number">07</div>
+                <div class="quest-info">
+                    <div class="quest-title">Alunos Transferidos e Token</div>
+                    <div class="quest-desc">Procedimento para estudantes novatos vindos de outra escola</div>
+                </div>
+                <div class="quest-xp">+100 XP</div>
+                <div class="quest-toggle">▾</div>
+            </div>
+            <div class="quest-body">
+                <div class="quest-content">
+                    <div class="info-box-dark">
+                        <strong>❓ "Se um estudante veio transferido de outra escola para realizar a prova na minha turma, o que devo fazer?"</strong>
+                    </div>
+
+                    <p>Se na sua escola há algum estudante novato e apto para realizar a prova, mas a classificação e enturmação já foi feita na escola de origem:</p>
+
+                    <ol>
+                        <li><strong>Comunicar com a escola antiga</strong> para que o trio gestor, Proati ou algum professor informe, no momento da prova, qual é o <strong>token de acesso</strong>.</li>
+                        <li>Caso contrário, o estudante <strong>não conseguirá abrir a prova</strong> na Sala do Futuro.</li>
+                    </ol>
+
+                    <div class="warning-box">
+                        <strong>⏰ Nota Importante:</strong> O estudante só poderá realizar a prova na data e turno programado. Portanto, esse contato deve ser feito da forma <strong>mais rápida possível</strong>.
+                    </div>
+
+                    <ul class="checklist" id="checklist7">
+                        <li onclick="toggleCheck(this)"><div class="check-box"></div>Identificar alunos transferidos antes da prova</li>
+                        <li onclick="toggleCheck(this)"><div class="check-box"></div>Contatar escola de origem para obter token</li>
+                        <li onclick="toggleCheck(this)"><div class="check-box"></div>Garantir contato rápido e eficiente</li>
+                    </ul>
+
+                    <div style="text-align:right;margin-top:1rem">
+                        <button class="complete-btn" onclick="completeQuest(7,100)">✅ Marcar como concluída</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- QUEST 8 -->
+        <div class="section-title-row">
+            <div class="section-marker"></div>
+            <div class="section-title">Missão 08</div>
+            <div class="section-tag">Material de Apoio</div>
+        </div>
+
+        <div class="quest-card" data-quest="8">
+            <div class="quest-header" onclick="toggleQuest(this)">
+                <div class="quest-number">08</div>
+                <div class="quest-info">
+                    <div class="quest-title">Material de Apoio</div>
+                    <div class="quest-desc">Vídeos, tutoriais e recursos complementares</div>
+                </div>
+                <div class="quest-xp">+50 XP</div>
+                <div class="quest-toggle">▾</div>
+            </div>
+            <div class="quest-body">
+                <div class="quest-content">
+                    <h3>🎥 Recursos disponíveis</h3>
+                    <div class="tips-grid">
+                        <div class="tip-card">
+                            <div class="tip-icon">📺</div>
+                            <div class="tip-title">Vídeo no YouTube</div>
+                            <div class="tip-text">"OLISP — Regulamento da Olimpíada" — esclareça dúvidas sobre o regulamento oficial.</div>
+                        </div>
+                        <div class="tip-card">
+                            <div class="tip-icon">📊</div>
+                            <div class="tip-title">Tutorial: Token em Lote</div>
+                            <div class="tip-text">Apresentação com passo a passo para gerar token em lote pela Sala do Futuro.</div>
+                        </div>
+                        <div class="tip-card">
+                            <div class="tip-icon">🔴</div>
+                            <div class="tip-title">LIVE — Orientações</div>
+                            <div class="tip-text">Live de orientações de aplicação da prova de recuperação com detalhes operacionais.</div>
+                        </div>
+                        <div class="tip-card">
+                            <div class="tip-icon">📄</div>
+                            <div class="tip-title">Gerar Token (Tutorial)</div>
+                            <div class="tip-text">Tutorial específico sobre como gerar um Token pela Sala do Futuro e pelo Gerenciador.</div>
+                        </div>
+                    </div>
+
+                    <ul class="checklist" id="checklist8">
+                        <li onclick="toggleCheck(this)"><div class="check-box"></div>Assistir ao vídeo do regulamento</li>
+                        <li onclick="toggleCheck(this)"><div class="check-box"></div>Consultar tutorial de geração de token</li>
+                        <li onclick="toggleCheck(this)"><div class="check-box"></div>Revisar checklist final antes da aplicação</li>
+                    </ul>
+
+                    <div style="text-align:right;margin-top:1rem">
+                        <button class="complete-btn" onclick="completeQuest(8,50)">✅ Marcar como concluída</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- LEGEND -->
+        <div class="card-dark" style="margin-top:2rem">
+            <div class="legend">
+                <div class="legend-item"><div class="legend-dot" style="background:#d32f2f"></div> Missão não iniciada</div>
+                <div class="legend-item"><div class="legend-dot" style="background:#16a34a"></div> Missão concluída</div>
+                <div class="legend-item"><div class="legend-dot" style="background:#ca8a04"></div> XP disponível</div>
+                <div class="legend-item"><div class="legend-dot" style="background:#ffec9e"></div> Nível alcançado</div>
+            </div>
+        </div>
+
+        <!-- FINAL CTA -->
+        <div class="final-cta" id="finalCta">
+            <h2>🏆 Você está pronto para a melhor aplicação da OLISP!</h2>
+            <p>Respeite horários e datas · Enturmação em dia · Token gerenciado · Fiscal atento e inclusivo<br><br>✨ <strong>Boas provas!</strong> — Programa de Olimpíadas Educacionais SEDUC-SP</p>
+        </div>
+
+    </div>
+
+    <footer>
+        <p>Guia Gamificado de Aplicação — <strong>OLISP 2026</strong></p>
+        <p>Olimpíada Interpreta SP · SEDUC-SP · São Paulo</p>
+    </footer>
+</div>
+
+<!-- Achievement Popup -->
+<div class="achievement-popup" id="achievementPopup">
+    <div class="ach-icon" id="achIcon"></div>
+    <div>
+        <div class="ach-title" id="achTitle"></div>
+        <div class="ach-desc" id="achDesc"></div>
+    </div>
+</div>
+
+<!-- Confetti -->
+<div class="confetti-container" id="confettiContainer"></div>
+
+<script>
+    const state = { totalXP: 0, completed: new Set() };
+
+    function toggleQuest(header) {
+        header.closest('.quest-card').classList.toggle('open');
+    }
+
+    function completeQuest(num, xp) {
+        if (state.completed.has(num)) return;
+        state.completed.add(num);
+        state.totalXP += xp;
+
+        const card = document.querySelector(`[data-quest="${num}"]`);
+        card.classList.add('completed');
+        const btn = card.querySelector('.complete-btn');
+        btn.textContent = '✅ Concluída!';
+        btn.disabled = true;
+
+        updateUI();
+        showAchievement(num, xp);
+
+        if (state.completed.size === 8) {
+            setTimeout(() => { launchConfetti(); showAchievement('final', 0); }, 600);
+        }
+    }
+
+    function updateUI() {
+        document.getElementById('totalXP').textContent = state.totalXP;
+        document.getElementById('completedCount').textContent = state.completed.size;
+        document.getElementById('progressFill').style.width = (state.completed.size / 8 * 100) + '%';
+        document.querySelectorAll('.milestone').forEach(m => {
+            if (state.completed.size >= parseInt(m.dataset.at)) m.classList.add('reached');
+        });
+    }
+
+    function toggleCheck(li) {
+        li.classList.toggle('checked');
+        li.querySelector('.check-box').textContent = li.classList.contains('checked') ? '✓' : '';
+    }
+
+    const achs = {
+        1: { icon: '📋', title: 'Logística Dominada!', desc: 'Preparação e cronograma concluídos.' },
+        2: { icon: '👩‍🏫', title: 'Fiscal Preparado!', desc: 'Orientações para fiscais concluídas.' },
+        3: { icon: '✨', title: 'Práticas de Excelência!', desc: 'Boas práticas de aplicação dominadas.' },
+        4: { icon: '🛠️', title: 'Técnico Resolvido!', desc: 'Soluções de problemas técnicas dominadas.' },
+        5: { icon: '📚', title: 'Diário Atualizado!', desc: 'Enturmação e frequência concluídas.' },
+        6: { icon: '🔐', title: 'Token Desbloqueado!', desc: 'Geração e uso do token dominados.' },
+        7: { icon: '🔄', title: 'Transferência Resolvida!', desc: 'Procedimento para alunos transferidos concluído.' },
+        8: { icon: '🎥', title: 'Materiais Consultados!', desc: 'Todos os recursos de apoio revisados.' },
+        final: { icon: '🏆', title: 'MESTRE DA OLISP!', desc: 'Todas as missões concluídas. Você está pronto!' }
+    };
+
+    function showAchievement(key, xp) {
+        const a = achs[key];
+        const popup = document.getElementById('achievementPopup');
+        document.getElementById('achIcon').textContent = a.icon;
+        document.getElementById('achTitle').textContent = a.title;
+        document.getElementById('achDesc').textContent = key === 'final' ? a.desc : a.desc + ` (+${xp} XP)`;
+        popup.classList.add('show');
+        setTimeout(() => popup.classList.remove('show'), 3500);
+    }
+
+    function launchConfetti() {
+        const c = document.getElementById('confettiContainer');
+        const colors = ['#d32f2f', '#ffec9e', '#ff6b6b', '#0a2f6c', '#ffd700'];
+        for (let i = 0; i < 80; i++) {
+            const p = document.createElement('div');
+            p.className = 'confetti-piece';
+            p.style.left = Math.random() * 100 + '%';
+            p.style.background = colors[Math.floor(Math.random() * colors.length)];
+            p.style.animationDelay = Math.random() * 2 + 's';
+            p.style.animationDuration = (2 + Math.random() * 2) + 's';
+            p.style.borderRadius = Math.random() > 0.5 ? '50%' : '2px';
+            p.style.width = (6 + Math.random() * 6) + 'px';
+            p.style.height = (6 + Math.random() * 6) + 'px';
+            c.appendChild(p);
+        }
+        setTimeout(() => { c.innerHTML = ''; }, 5000);
+    }
+</script>
+</body>
+</html>
